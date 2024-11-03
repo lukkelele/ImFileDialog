@@ -1,4 +1,6 @@
 # ImFileDialog
+> Note: Forked to build with newer versions of ImGui.
+
 A simple file dialog library for Dear ImGui.
 
 This library supports favorites, actual Windows icons, image previews, zooming in, etc...
