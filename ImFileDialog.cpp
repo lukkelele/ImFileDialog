@@ -1164,8 +1164,10 @@ namespace ifd {
 		else {
 			// content
 			int fileId = 0;
-			for (auto& entry : m_content) {
-				if (entry.HasIconPreview && entry.IconPreviewData != nullptr) {
+			for (FileDialog::FileData& entry : m_content) 
+			{
+				if (entry.HasIconPreview && entry.IconPreviewData != nullptr) 
+				{
 					entry.IconPreview = this->CreateTexture(entry.IconPreviewData, entry.IconPreviewWidth, entry.IconPreviewHeight, 1);
 					stbi_image_free(entry.IconPreviewData);
 					entry.IconPreviewData = nullptr;
@@ -1173,29 +1175,49 @@ namespace ifd {
 
 				std::string filename = entry.Path.filename().u8string();
 				if (filename.size() == 0)
+				{
 					filename = entry.Path.u8string(); // drive
+				}
 
 				bool isSelected = std::count(m_selections.begin(), m_selections.end(), entry.Path);
 
-				if (FileIcon(filename.c_str(), isSelected, entry.HasIconPreview ? entry.IconPreview : (ImTextureID)m_getIcon(entry.Path), ImVec2(32 + 16 * m_zoom, 32 + 16 * m_zoom), entry.HasIconPreview, entry.IconPreviewWidth, entry.IconPreviewHeight)) {
+				if (FileIcon(filename.c_str(), 
+							 isSelected, 
+							 entry.HasIconPreview ? reinterpret_cast<std::intptr_t>(entry.IconPreview) : reinterpret_cast<std::intptr_t>(m_getIcon(entry.Path)),
+							 ImVec2(32 + 16 * m_zoom, 32 + 16 * m_zoom), 
+							 entry.HasIconPreview, 
+					         entry.IconPreviewWidth, 
+					         entry.IconPreviewHeight)) 
+				{
 					std::error_code ec;
 					bool isDir = std::filesystem::is_directory(entry.Path, ec);
 
-					if (ImGui::IsMouseDoubleClicked(0)) {
-						if (isDir) {
+					if (ImGui::IsMouseDoubleClicked(0)) 
+					{
+						if (isDir) 
+						{
 							m_setDirectory(entry.Path);
 							break;
 						}
 						else
+						{
 							m_finalize(filename);
+						}
 					}
-					else {
+					else 
+					{
 						if ((isDir && m_type == IFD_DIALOG_DIRECTORY) || !isDir)
+						{
 							m_select(entry.Path, ImGui::GetIO().KeyCtrl);
+						}
 					}
 				}
+
 				if (ImGui::IsItemClicked(ImGuiMouseButton_Right))
+				{
 					m_selectedFileItem = fileId;
+				}
+				
 				fileId++;
 			}
 		}
