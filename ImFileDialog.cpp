@@ -6,7 +6,9 @@
 #include <fstream>
 #include <algorithm>
 #include <sys/stat.h>
+#ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
+#endif
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
@@ -14,7 +16,9 @@
 #include "stb_image.h"
 
 #ifdef _WIN32
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #include <shellapi.h>
 #include <lmcons.h>
